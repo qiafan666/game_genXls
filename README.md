@@ -14,7 +14,7 @@ int = int32
 long = int64
 float = float64
 string = string
-List<> 代表数组，如 List<int> 代表 int 数组。
+List<> 代表数组，如  List<int> 代表 int32 数组。
 
 ## 自定义数据结构
 自定义类型需要在 struct_自定义数据结构表中配好，然后再引用。
