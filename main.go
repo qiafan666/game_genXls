@@ -13,11 +13,11 @@ import (
 )
 
 var (
-	savePath  = flag.String("savePath", "", "Path to save the makefile")
-	readPath  = flag.String("readPath", "", "The path of reading Excel")
-	genStruct = flag.Int64("genStruct", 0, "gen struct | gen json")
-	mongoUri  = flag.String("mongoUri", "", "mongo uri to save config data")
-	mongoDb   = flag.String("mongoDb", "", "mongo db name to save config data")
+	savePath = flag.String("savePath", "", "Path to save the makefile")
+	readPath = flag.String("readPath", "", "The path of reading Excel")
+	genType  = flag.String("genType", "", "gen struct | gen json")
+	mongoUri = flag.String("mongoUri", "", "mongo uri to save config data")
+	mongoDb  = flag.String("mongoDb", "", "mongo db name to save config data")
 )
 
 func main() {
@@ -28,13 +28,20 @@ func main() {
 		return
 	}
 	gt := lib.Generate{}
-	if *genStruct == 1 {
+	switch *genType {
+	case "struct": // gen struct
 		err := gt.GenStruct(*readPath, *savePath)
 		if err != nil {
 			fmt.Printf("generate struct err:%v\n", err)
 			return
 		}
-	} else {
+	case "json": // gen json
+		err := gt.GenJson(*readPath, *savePath)
+		if err != nil {
+			fmt.Printf("generate json err:%v\n", err)
+			return
+		}
+	case "mongo": // gen mongo
 		if *mongoUri == "" || *mongoDb == "" {
 			fmt.Println("mongoUri or mongoDb is nil")
 		}
@@ -60,6 +67,9 @@ func main() {
 		if err != nil {
 			fmt.Printf("generate json err:%v\n", err)
 			return
+
 		}
+	default:
+		fmt.Println("type is nil")
 	}
 }
