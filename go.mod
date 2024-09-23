@@ -3,14 +3,16 @@ module game_genXls
 go 1.22.4
 
 require (
+	github.com/qiafan666/gotato v1.1.18
 	github.com/tealeg/xlsx v1.0.5
 	go.mongodb.org/mongo-driver v1.17.0
 )
 
 require (
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect

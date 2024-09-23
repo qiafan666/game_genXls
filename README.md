@@ -18,3 +18,12 @@ List<> 代表数组，如  List<int> 代表 int32 数组。
 
 ## 自定义数据结构
 自定义类型需要在 struct_自定义数据结构表中配好，然后再引用。
+
+## 注意事项
+sheet为结构体名称，首字母大写，如称号表。
+称号表示例中，第三行字母代表意义为：
+A：all 
+S:server
+C:client
+D:database
+G:game

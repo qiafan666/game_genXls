@@ -17,6 +17,13 @@ type Title struct {
 	TestStruct       Vector3 // 测试结构体
 }
 
+type GlobalConfig struct {
+	Id    int32  // id
+	Notes string // 备注
+	Data1 string // 数据1
+	Data3 int32  // 数据3
+}
+
 type Award struct {
 	ID  int32 // 道具id
 	Num int64 // 道具数量
@@ -120,9 +127,11 @@ type FxPath struct {
 }
 
 type RawConfig struct {
-	Title []*Title
+	GlobalConfig []*GlobalConfig
+	Title        []*Title
 }
 
 var AllValues = map[string]any{
-	"Title": new(Title),
+	"GlobalConfig": new(GlobalConfig),
+	"Title":        new(Title),
 }
