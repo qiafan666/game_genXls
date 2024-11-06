@@ -64,7 +64,7 @@ func (c *conf) parseGoStructField() error {
 		}
 		// 字段类型检查
 		if _, ok := goTypes[ft.Kind()]; !ok {
-			return fmt.Errorf("conf %v.%v unsupport kind %v", c.name, f.Name, ft.Kind())
+			return fmt.Errorf("excel文件=%v.%v 不支持的类型=%v", c.name, f.Name, ft.Kind())
 		}
 		c.fields[f.Name] = &goFieldMeta{
 			fieldIdx:  i,
@@ -113,7 +113,7 @@ func (c *conf) parseLine(line []string, lineNum int) (any, error) {
 	rt := rv.Type()
 	for _, f := range c.fields {
 		if f.columnIdx == -1 {
-			return nil, fmt.Errorf("conf %v parse %v typ:%v line:%v", c.name, f.name, c.typ, lineNum+5)
+			return nil, fmt.Errorf("excel文件=%v 解析字段=%v 类型=%v 行数=%v", c.name, f.name, c.typ, lineNum+5)
 		}
 		ft := rt.Field(f.fieldIdx)
 		fv := rv.Field(f.fieldIdx)
@@ -121,7 +121,7 @@ func (c *conf) parseLine(line []string, lineNum int) (any, error) {
 		row := line[f.columnIdx]
 		err := goTypes[fk].parse(row, fv)
 		if err != nil {
-			return nil, fmt.Errorf("conf %v parse %v err: %v typ:%v line:%v", c.name, f.name, err, c.typ, lineNum+5)
+			return nil, fmt.Errorf("excel文件=%v 解析字段=%v 错误=%v 类型=%v 行数=%v", c.name, f.name, err, c.typ, lineNum+5)
 		}
 	}
 	return rv.Addr().Interface(), nil
@@ -134,7 +134,7 @@ func xlsParseInt(s string, v reflect.Value) error {
 	}
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
-		return fmt.Errorf("%v must be int", s)
+		return fmt.Errorf("%v 必须为 int", s)
 	}
 
 	switch v.Kind() {
@@ -169,7 +169,7 @@ func xlsParseBool(s string, v reflect.Value) error {
 	}
 	i, err := strconv.ParseBool(s)
 	if err != nil {
-		return fmt.Errorf("%v must be bool", s)
+		return fmt.Errorf("%v 必须为 bool", s)
 	}
 	v.SetBool(i)
 	return nil
@@ -182,7 +182,7 @@ func xlsParseFloat(s string, v reflect.Value) error {
 	}
 	i, err := strconv.ParseFloat(s, 64)
 	if err != nil {
-		return fmt.Errorf("%v must be float64", s)
+		return fmt.Errorf("%v 必须为 float64", s)
 	}
 	v.SetFloat(i)
 	return nil

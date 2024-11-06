@@ -31,7 +31,7 @@ func (g *Generate) ParseData(sheet *xlsx.Sheet, typ any, fileName string) ([]any
 			}
 			stack := *(*string)(unsafe.Pointer(&buf))
 			_, _ = fmt.Fprintf(os.Stderr, "%v: %s\n", r, stack)
-			fmt.Printf("ParseData data fail file:%s\n", fileName)
+			fmt.Printf("解析数据错误，请检查excel文件:%s\n", fileName)
 			os.Exit(2)
 		}
 	}()

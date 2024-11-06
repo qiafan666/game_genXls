@@ -118,8 +118,13 @@ func (g *Generate) GenStruct(readPath, savePath string) error {
 }
 
 func (g *Generate) genUserDefStruct(sheet *xlsx.Sheet) error {
+	// 判断首字母是否大写
+	if firstRuneToUpper(sheet.Name) != sheet.Name {
+		return fmt.Errorf("sheet[%v] 名称首字母必须大写", sheet.Name)
+	}
+
 	if hasChineseOrDefault(sheet.Name) {
-		return fmt.Errorf("sheet[%v] name has chinese", sheet.Name)
+		return fmt.Errorf("sheet[%v] 名称中有中文", sheet.Name)
 	}
 	sheetData := make([][]string, 0)
 	// 遍历行
@@ -148,7 +153,7 @@ func (g *Generate) splicingUserDefData(data [][]string) error {
 		for i := 1; i < len(valueS); i++ {
 			infoS := strings.Split(valueS[i], "#")
 			if len(infoS) != 3 {
-				return fmt.Errorf("user def struct error")
+				return fmt.Errorf("自定义结构体格式不正确:%v", infoS)
 			}
 			structData += fmt.Sprintf(userDefStructValue, infoS[0], transToGolangTye(infoS[1]), infoS[2])
 		}
@@ -169,6 +174,9 @@ func (g *Generate) splicingData(data [][]string, structName string) error {
 		if err != nil {
 			return err
 		}
+
+		//修改case可以读取不同端的配置
+		//S:服务端  A:所有人  C:客户端  D:策划  T:测试
 		switch value[2] {
 		case "S", "A":
 			structData += fmt.Sprintf(structValueForServer, firstRuneToUpper(value[1]), transToGolangTye(value[3]))
@@ -176,7 +184,7 @@ func (g *Generate) splicingData(data [][]string, structName string) error {
 				structData += fmt.Sprintf(structRemarks, firstLine(value[0]))
 			}
 			structData += fmt.Sprintf(structValueEnd)
-		case "C", "D", "G", "":
+		case "C", "D", "T", "":
 			continue
 		default:
 			return fmt.Errorf("splicingData:%v is not in A,S,C,D,G", value[2])
