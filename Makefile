@@ -25,5 +25,5 @@ cp:
 ##&& cp -R $(savePath)/json $(mainPath)
 
 struct: gen_struct fmt
-json: gen_json fmt
+json: gen_struct gen_json fmt
 mongo: git_pull gen_struct gen_mongo fmt cp
