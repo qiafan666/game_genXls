@@ -175,6 +175,16 @@ func (g *Generate) splicingData(data [][]string, structName string) error {
 			return err
 		}
 
+		//特殊处理id，不校验
+		if strings.ToLower(value[1]) == "id" {
+			structData += fmt.Sprintf(structValueForServer, firstRuneToUpper(strings.ToLower(value[1])), transToGolangTye(value[3]))
+			if value[0] != "" {
+				structData += fmt.Sprintf(structRemarks, firstLine(value[0]))
+			}
+			structData += fmt.Sprintf(structValueEnd)
+			continue
+		}
+
 		//修改case可以读取不同端的配置
 		//S:服务端  A:所有人  C:客户端  D:策划  T:测试
 		switch value[2] {
@@ -263,6 +273,12 @@ func firstRuneToUpper(str string) string {
 	if len(str) == 0 {
 		return str
 	}
+
+	// 特殊处理Id
+	if strings.ToLower(str) == "id" {
+		return "Id"
+	}
+
 	return strings.ToUpper(string(str[0])) + str[1:]
 }
 
@@ -271,6 +287,12 @@ func capitalizeFirstLetter(s string) string {
 	if len(s) == 0 {
 		return s
 	}
+
+	// 特殊处理Id
+	if strings.ToLower(s) == "id" {
+		return "Id"
+	}
+
 	// 去掉结尾的空格
 	s = strings.TrimSpace(s)
 	// 将首个字母转化成大写

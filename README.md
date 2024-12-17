@@ -27,3 +27,5 @@ S:server
 C:client
 D:database
 G:game
+
+目前特殊处理的xlsx文件中的id列，统一结构体字段为Id，同时跳过上述类型校验，不做判断，直接生成。

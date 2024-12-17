@@ -80,10 +80,21 @@ func (c *conf) parseGoStructField() error {
 // 解析tsv行首信息
 func (c *conf) parseColumnMeta(conditions, names []string) error {
 	for i, cond := range conditions {
+
+		//id不区分类型，同时保证整洁，统一为Id
+		if capitalizeFirstLetter(names[i]) == "Id" {
+			name := capitalizeFirstLetter(names[i])
+			if f := c.fields[name]; f != nil {
+				f.columnIdx = i
+			}
+			continue
+		}
+
 		// 服务器不解析
 		if cond != "S" && cond != "A" {
 			continue
 		}
+
 		name := capitalizeFirstLetter(names[i])
 		if f := c.fields[name]; f != nil {
 			f.columnIdx = i
