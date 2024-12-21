@@ -64,7 +64,7 @@ func (c *conf) parseGoStructField() error {
 		}
 		// 字段类型检查
 		if _, ok := goTypes[ft.Kind()]; !ok {
-			return fmt.Errorf("excel文件=%v.%v 不支持的类型=%v", c.name, f.Name, ft.Kind())
+			return fmt.Errorf("sheet=%v.%v 不支持的类型=%v", c.name, f.Name, ft.Kind())
 		}
 		c.fields[f.Name] = &goFieldMeta{
 			fieldIdx:  i,
@@ -124,7 +124,7 @@ func (c *conf) parseLine(line []string, lineNum int) (any, error) {
 	rt := rv.Type()
 	for _, f := range c.fields {
 		if f.columnIdx == -1 {
-			return nil, fmt.Errorf("excel文件=%v 解析字段=%v 类型=%v 行数=%v", c.name, f.name, c.typ, lineNum+5)
+			return nil, fmt.Errorf("sheet=%v 解析字段=%v 行数=%v 类型=%v ", c.name, f.name, lineNum+5, c.typ)
 		}
 		ft := rt.Field(f.fieldIdx)
 		fv := rv.Field(f.fieldIdx)
@@ -132,7 +132,7 @@ func (c *conf) parseLine(line []string, lineNum int) (any, error) {
 		row := line[f.columnIdx]
 		err := goTypes[fk].parse(row, fv)
 		if err != nil {
-			return nil, fmt.Errorf("excel文件=%v 解析字段=%v 错误=%v 类型=%v 行数=%v", c.name, f.name, err, c.typ, lineNum+5)
+			return nil, fmt.Errorf("sheet=%v 解析字段=%v 错误=%v 行数=%v 类型=%v", c.name, f.name, err, lineNum+5, c.typ)
 		}
 	}
 	return rv.Addr().Interface(), nil
