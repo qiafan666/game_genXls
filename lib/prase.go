@@ -124,7 +124,7 @@ func (c *conf) parseLine(line []string, lineNum int) (any, error) {
 	rt := rv.Type()
 	for _, f := range c.fields {
 		if f.columnIdx == -1 {
-			return nil, fmt.Errorf("sheet=%v 解析字段=%v 行数=%v 类型=%v ", c.name, f.name, lineNum+5, c.typ)
+			return nil, fmt.Errorf("conf %v parse %v typ:%v 表头格式错误（一般是空的列，有空格，小写等）", c.name, f.name, c.typ)
 		}
 		ft := rt.Field(f.fieldIdx)
 		fv := rv.Field(f.fieldIdx)
