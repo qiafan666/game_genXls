@@ -53,11 +53,14 @@ func (g *Generate) readAll(sheet *xlsx.Sheet) [][]string {
 	for i := 0; i < sheet.MaxRow; i++ {
 		// 判断某一列的第一列是否为空
 		if sheet.Cell(i, 0).Value == "" {
-			continue
+			break
 		}
 		cellData := make([]string, 0)
 		// 遍历列
 		for j := 0; j < sheet.MaxCol; j++ {
+			if sheet.Cell(0, j).Value == "" {
+				break
+			}
 			cellData = append(cellData, sheet.Cell(i, j).Value)
 		}
 		sheetData = append(sheetData, cellData)
